@@ -1,10 +1,29 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
+<article class="py-24 mt-16">
+  <div class="max-w-4xl mx-auto px-6">
+    <header class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 font-deco text-text-primary">{{ .Title }}</h1>
 
-  {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-  {{ $dateHuman := .Date | time.Format ":date_long" }}
-  <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+      {{ if .Date }}
+      {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+      {{ $dateHuman := .Date | time.Format ":date_long" }}
+      <time datetime="{{ $dateMachine }}" class="text-text-muted text-sm">{{ $dateHuman }}</time>
+      {{ end }}
+    </header>
 
-  {{ .Content }}
-  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+    <div class="prose prose-lg max-w-none">
+      {{ .Content }}
+    </div>
+    {{ with .Params.tags }}
+    <div class="mt-12 pt-8 border-t border-border">
+      <div class="flex flex-wrap gap-2">
+        {{- range . }}
+        <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="px-3 py-1 rounded-full text-xs font-medium border border-accent-primary text-accent-primary bg-transparent hover:bg-accent-primary hover:text-white transition-colors">
+          {{ . }}
+        </a>
+        {{- end }}
+      </div>
+    {{ end }}
+  </div>
+</article>
 {{ end }}

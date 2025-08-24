@@ -4,8 +4,8 @@
 {{ $recentPosts := first (.limit | default 6) (where .Site.RegularPages "Section" $section) }}
 
 {{ if $recentPosts }}
-<section class="deco-section{{ if .dark_bg }} bg-slate-950{{ end }}">
-  <div class="deco-container">
+<section class="py-16 md:py-24{{ if .dark_bg }} bg-slate-950{{ end }}">
+  <div class="max-w-7xl mx-auto px-6">
     <div class="text-center mb-16">
       <h2 class="font-deco text-4xl {{ if .dark_bg }}text-cream-100{{ else }}text-text-primary{{ end }} mb-4">
         {{ .title | default (printf "Recent %s" ($sectionPage.Title | default (title $section))) }}
@@ -17,57 +17,57 @@
     
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {{ range $recentPosts }}
-      <article class="deco-gallery-card">
-        {{ if and .Resources (ne $section "blog") }}
-          {{ $image := .Resources.GetMatch "featured*" }}
-          {{ if $image }}
-          <div class="deco-gallery-card__image">
-            <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" loading="lazy">
-          </div>
+        <article class="bg-surface border border-border rounded-deco overflow-hidden hover:border-border-focus transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl">
+          {{ if and .Resources (ne $section "blog") }}
+            <a href="{{ .RelPermalink }}" class="text-accent-primary hover:text-accent-secondary font-medium transition-colors">
+              {{ if eq $section "blog" }}Read More{{ else if eq $section "r-paks" }}View Package{{ else }}Learn More{{ end }}
+            </a>
           {{ end }}
-        {{ end }}
-        
-        <div class="deco-gallery-card__content"{{ if eq $section "blog" }} style="padding-top: 1.5rem;"{{ end }}>
-          {{ if .Date }}
-          <div class="text-xs text-accent-primary mb-2 uppercase tracking-wide">
-            {{ .Date.Format ($.Site.Params.dateFormat | default "Jan 2006") }}
-          </div>
-          {{ end }}
-          
-          <h3 class="deco-gallery-card__title{{ if eq $section "blog" }} text-lg{{ end }}">{{ .Title }}</h3>
-          
-          <p class="deco-gallery-card__description{{ if eq $section "blog" }} text-sm{{ end }}">
-            {{ .Summary | truncate 120 }}
-          </p>
-          
-          {{ if and .Params.tags (eq $section "blog") }}
-          <div class="flex flex-wrap gap-1 mb-3">
-            {{ range first 3 .Params.tags }}
-            <span class="deco-badge deco-badge--outline text-xs">{{ . }}</span>
-            {{ end }}
-          </div>
-          {{ end }}
-          
-          {{ if and .Params.github (ne $section "blog") }}
-          <div class="flex justify-between text-sm text-text-muted mb-4">
-            <span>{{ .Params.downloads | default "CRAN" }}</span>
-            <span>⭐ {{ .Params.stars | default "GitHub" }}</span>
-          </div>
-          {{ end }}
-          
-          <a href="{{ .RelPermalink }}" class="deco-gallery-card__link">
-            {{ if eq $section "blog" }}Read More{{ else if eq $section "r-paks" }}View Package{{ else }}Learn More{{ end }}
-          </a>
-        </div>
-      </article>
+        </article>
       {{ end }}
     </div>
     
     <div class="text-center mt-12">
-      <a href="/{{ $section }}" class="deco-hero__cta">
+      <a href="/{{ $section }}" class="inline-block px-8 py-4 bg-accent-primary text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 hover:-translate-y-0.5 shadow-lg hover:shadow-xl">
         View All {{ $sectionPage.Title | default (title $section) }} →
       </a>
     </div>
   </div>
 </section>
 {{ end }}
+
+{{ $image := .Resources.GetMatch "featured*" }}
+{{ if $image }}
+  <div class="aspect-video overflow-hidden">
+    <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+  </div>
+{{ end }}
+        
+<div class="p-6{{ if eq $section "blog" }} pt-6{{ end }}">
+  {{ if .Date }}
+    <div class="text-xs text-accent-primary mb-2 uppercase tracking-wide">
+      {{ .Date.Format ($.Site.Params.dateFormat | default "Jan 2006") }}
+    </div>
+  {{ end }}
+  
+  <h3 class="font-bold mb-3 font-deco text-text-primary{{ if eq $section "blog" }} text-lg{{ else }} text-xl{{ end }}">{{ .Title }}</h3>
+  
+  <p class="text-text-secondary mb-4{{ if eq $section "blog" }} text-sm{{ end }}">
+    {{ .Summary | truncate 120 }}
+  </p>
+  
+  {{ if and .Params.tags (eq $section "blog") }}
+    <div class="flex flex-wrap gap-1 mb-3">
+      {{ range first 3 .Params.tags }}
+        <span class="px-3 py-1 rounded-full text-xs font-medium border border-accent-primary text-accent-primary bg-transparent">{{ . }}</span>
+      {{ end }}
+    </div>
+  {{ end }}
+  
+  {{ if and .Params.github (ne $section "blog") }}
+    <div class="flex justify-between text-sm text-text-muted mb-4">
+      <span>{{ .Params.downloads | default "CRAN" }}</span>
+      <span>⭐ {{ .Params.stars | default "GitHub" }}</span>
+    </div>
+  {{ end }}
+</div>

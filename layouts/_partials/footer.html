@@ -1,22 +1,24 @@
-<footer class="deco-footer">
-  <div class="deco-footer__content">
-    <div class="deco-footer__logo">{{ .Site.BaseURL | replaceRE "https?://" "" | replaceRE "/$" "" }}</div>
+<footer class="bg-noir-950 text-cream-100 py-16">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+    <div class="text-2xl font-bold mb-4 font-deco text-brass-400">
+      {{ .Site.BaseURL | replaceRE "https?://" "" | replaceRE "/$" "" }}
+    </div>
     
-    <p class="deco-footer__text">
+    <p class="text-cream-300 mb-8 max-w-2xl mx-auto">
       {{ .Site.Params.description | default "Building open source tools for research and education." }}
     </p>
     
     {{ if .Site.Menus.footer }}
-    <div class="deco-footer__links">
+    <div class="flex flex-wrap justify-center gap-6 mb-8">
       {{ range .Site.Menus.footer }}
-      <a href="{{ .URL }}">{{ .Name }}</a>
+      <a href="{{ .URL }}" class="text-cream-200 hover:text-brass-300 transition-colors">{{ .Name }}</a>
       {{ end }}
     </div>
     {{ end }}
     
-    <div class="deco-footer__divider"></div>
+    <div class="h-px bg-cream-800 mb-8"></div>
     
-    <div class="deco-footer__copyright">
+    <div class="text-cream-400 text-sm">
       {{ with .Site.Params.footerSection.title }}
         {{ . | safeHTML }}
       {{ else }}

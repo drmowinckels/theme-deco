@@ -1,6 +1,5 @@
 # Hugo Art Deco Developer Site Configuration
 baseURL  = "./"
-theme    = "hugo-deco"  # Updated to new Art Deco theme
 title    = "Dr. Mowinckel's"
 
 buildDrafts     = true    
@@ -11,7 +10,7 @@ enableRobotsTXT = true
 enableGitInfo   = true
 enforce_ssl     = true
 
-DefaultContentLanguage  = "en-UK" 
+DefaultContentLanguage  = "en" 
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "index\\.html", "about\\.html",
     "static/blog/\\*_files/", "README", "\\.knit\\.md$", "\\.utf8\\.md$",
     "\\.qmd$", "\\.ipynb$", "\\.py$", "about/resume*"]
@@ -156,7 +155,6 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "index\\.html", "about\\.h
 # Security settings for Art Deco theme
 [security]
   [security.exec]
-    allow = ["^(dart-)?sass(-embedded)?$", "^go$", "^npx$", "^postcss$"]
-    osEnv = ["(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM|GO.*|HUGO_.*)$"]
+    allow = ['^(dart-)?sass(-embedded)?$', '^go$', '^npx$', '^postcss$', '^git$']   
   [security.funcs]
     getenv = ["^HUGO_", "^CI$"]

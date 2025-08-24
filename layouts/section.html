@@ -1,8 +1,47 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  {{ range .Pages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-    {{ .Summary }}
-  {{ end }}
+<section class="py-24 mt-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <header class="text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 font-deco text-text-primary">{{ .Title }}</h1>
+      {{ if .Content }}
+      <div class="prose prose-lg mx-auto text-text-secondary">
+        {{ .Content }}
+      </div>
+      {{ end }}
+    </header>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {{ range .Pages }}
+      <article class="bg-surface border border-border rounded-deco overflow-hidden hover:border-border-focus transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl">
+        {{ if .Resources.GetMatch "featured*" }}
+          {{ $image := .Resources.GetMatch "featured*" }}
+          <div class="aspect-video overflow-hidden">
+            <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+          </div>
+        {{ end }}
+        
+        <div class="p-6">
+          <h2 class="text-xl font-bold mb-3 font-deco text-text-primary">
+            <a href="{{ .RelPermalink }}" class="hover:text-accent-primary transition-colors">{{ .LinkTitle }}</a>
+          </h2>
+          
+          {{ if .Summary }}
+          <p class="text-text-secondary mb-4">{{ .Summary }}</p>
+          {{ end }}
+          
+          {{ if .Date }}
+          <div class="text-xs text-accent-primary mb-2 uppercase tracking-wide">
+            {{ .Date.Format "Jan 2006" }}
+          </div>
+          {{ end }}
+          
+          <a href="{{ .RelPermalink }}" class="text-accent-primary hover:text-accent-secondary font-medium transition-colors">
+            Read More →
+          </a>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
 {{ end }}

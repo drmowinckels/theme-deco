@@ -4,12 +4,12 @@
 
 {{ if $featured }}
   {{ $projectPage := .Site.GetPage $featured.Params.project_url }}
-<section class="deco-split">
-  <div class="deco-split__panel deco-split__panel--dark">
-    <div class="deco-split__content">
-      <div class="deco-split__eyebrow">{{ $featured.Params.eyebrow | default "Featured Project" }}</div>
-      <h2 class="deco-split__title">{{ $featured.Title }}</h2>
-      <div class="deco-split__text">
+<section class="grid md:grid-cols-2 min-h-screen">
+  <div class="flex items-center justify-center p-8 md:p-12 bg-noir-950 text-cream-100">
+    <div class="max-w-lg">
+      <div class="text-sm uppercase tracking-wider text-brass-400 mb-4">{{ $featured.Params.eyebrow | default "Featured Project" }}</div>
+      <h2 class="text-4xl md:text-5xl font-bold mb-6 font-deco">{{ $featured.Title }}</h2>
+      <div class="text-lg mb-8 opacity-90">
         {{ $featured.Summary | markdownify }}
       </div>
       
@@ -36,23 +36,23 @@
         {{ end }}
       </div>
       
-      <a href="{{ if $projectPage }}{{ $projectPage.RelPermalink }}{{ else }}{{ $featured.Params.project_url }}{{ end }}" class="deco-hero__cta">
+      <a href="{{ if $projectPage }}{{ $projectPage.RelPermalink }}{{ else }}{{ $featured.Params.project_url }}{{ end }}" class="inline-block px-8 py-4 bg-accent-primary text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 hover:-translate-y-0.5 shadow-lg hover:shadow-xl">
         {{ $featured.Params.cta | default (printf "Explore %s →" $featured.Title) }}
       </a>
     </div>
   </div>
   
-  <div class="deco-split__panel deco-split__panel--light">
-    <div class="deco-split__image">
-      <div class="deco-arch deco-arch--large">
+  <div class="flex items-center justify-center p-8 md:p-12 bg-cream-50 text-noir-800">
+    <div class="relative w-full h-full min-h-96">
+      <div class="deco-arch w-full h-full relative overflow-hidden">
         {{ if $featured.Resources.GetMatch "featured*" }}
           {{ $image := $featured.Resources.GetMatch "featured*" }}
-          <img src="{{ $image.RelPermalink }}" alt="{{ $featured.Title }}" loading="lazy">
+          <img src="{{ $image.RelPermalink }}" alt="{{ $featured.Title }}" loading="lazy" class="w-full h-full object-cover">
         {{ else if and $projectPage ($projectPage.Resources.GetMatch "featured*") }}
           {{ $image := $projectPage.Resources.GetMatch "featured*" }}
-          <img src="{{ $image.RelPermalink }}" alt="{{ $featured.Title }}" loading="lazy">
+          <img src="{{ $image.RelPermalink }}" alt="{{ $featured.Title }}" loading="lazy" class="w-full h-full object-cover">
         {{ else if $featured.Params.image }}
-          <img src="{{ $featured.Params.image | relURL }}" alt="{{ $featured.Title }}" loading="lazy">
+          <img src="{{ $featured.Params.image | relURL }}" alt="{{ $featured.Title }}" loading="lazy" class="w-full h-full object-cover">
         {{ else }}
           <!-- Fallback visualization -->
           <div class="bg-gradient-to-br from-amethyst-500 to-teal-600 w-full h-full flex items-center justify-center">

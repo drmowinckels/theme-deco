@@ -1,22 +1,22 @@
 <!-- Core Contributions Grid -->
-<section class="deco-section">
-  <div class="deco-container">
+<section class="py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-6">
     <div class="text-center mb-16">
       <h2 class="font-deco text-5xl text-text-primary mb-4">{{ .Site.Params.contributions.title | default "Core Contributions" }}</h2>
       <p class="text-text-secondary text-lg">{{ .Site.Params.contributions.subtitle | default "Open source tools and educational resources" }}</p>
       <div class="deco-divider"></div>
     </div>
     
-    <div class="deco-service-grid">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
       {{ range .Site.Menus.main }}
         {{ $section := $.Site.GetPage .URL }}
         {{ if $section }}
-        <div class="deco-service-grid__card">
-          <div class="deco-service-grid__icon" style="background: var({{ .Params.color | default "--color-amethyst-600" }});">
+        <div class="bg-surface border border-border rounded-deco p-8 text-center hover:border-border-focus transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl">
+          <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center text-2xl text-white" style="background: var({{ .Params.color | default "--color-amethyst-600" }});">
             {{ .Params.icon | default "📦" }}
           </div>
-          <h3 class="deco-service-grid__title">{{ .Name }}</h3>
-          <p class="deco-service-grid__description">
+          <h3 class="text-xl font-bold mb-4 font-deco text-text-primary">{{ .Name }}</h3>
+          <p class="text-text-secondary mb-6">
             {{ $section.Summary | default $section.Description }}
           </p>
           
@@ -42,7 +42,7 @@
             </div>
           {{ end }}
           
-          <a href="{{ .URL }}" class="deco-service-grid__link">{{ .Post | default (printf "Browse %s" .Name) }}</a>
+          <a href="{{ .URL }}" class="text-accent-primary hover:text-accent-secondary font-medium transition-colors">{{ .Post | default (printf "Browse %s" .Name) }}</a>
         </div>
         {{ end }}
       {{ end }}

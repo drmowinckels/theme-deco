@@ -3,7 +3,6 @@
 <head>
   {{ partial "head/meta.html" . }}
   {{ partial "head/css.html" . }}
-  {{ partial "head/analytics.html" . }}
 </head>
 <body>
   {{ partial "navigation.html" . }}
@@ -13,8 +12,8 @@
   </main>
   
   {{ partial "footer.html" . }}
-  {{ partial "scripts/theme-toggle.html" . }}
   {{ partial "scripts/analytics.html" . }}
+  {{ partial "scripts/theme-toggle.html" . }}
   {{ partial "giscus.html" . }}
 </body>
 </html>

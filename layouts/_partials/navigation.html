@@ -1,22 +1,22 @@
-<nav class="deco-nav">
-  <div class="deco-nav__container">
-    <a href="/" class="deco-nav__logo">
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface/90 border-b border-border backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="/" class="text-xl font-bold text-text-primary font-deco">
       {{ if .Site.Params.aesthetics.logo }}
         <img src="{{ .Site.Params.aesthetics.logo | relURL }}" 
              alt="{{ .Site.Title }}" 
-             height="{{ .Site.Params.aesthetics.height | default "40px" }}">
+             class="h-10">
       {{ else }}
         {{ .Site.Title }}
       {{ end }}
     </a>
     
     {{ if .Site.Menus.main }}
-    <ul class="deco-nav__menu">
-      <li><a href="/" class="deco-nav__link {{ if .IsHome }}deco-nav__link--active{{ end }}">Home</a></li>
+    <ul class="hidden md:flex items-center gap-8">
+      <li><a href="/" class="text-text-secondary hover:text-accent-primary transition-colors font-medium {{ if .IsHome }}text-accent-primary relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-accent-primary{{ end }}">Home</a></li>
       {{ range .Site.Menus.main }}
       <li>
         <a href="{{ .URL }}" 
-           class="deco-nav__link {{ if $.IsMenuCurrent "main" . }}deco-nav__link--active{{ end }}">
+           class="text-text-secondary hover:text-accent-primary transition-colors font-medium {{ if $.IsMenuCurrent "main" . }}text-accent-primary relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-accent-primary{{ end }}">
           {{ .Name }}
         </a>
       </li>
