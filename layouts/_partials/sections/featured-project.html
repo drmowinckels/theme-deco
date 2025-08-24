@@ -1,0 +1,70 @@
+<!-- Featured Project Section -->
+{{ $featuredContent := where (where .Site.RegularPages "Section" "featured") ".Params.featured" true }}
+{{ $featured := index $featuredContent 0 }}
+
+{{ if $featured }}
+  {{ $projectPage := .Site.GetPage $featured.Params.project_url }}
+<section class="deco-split">
+  <div class="deco-split__panel deco-split__panel--dark">
+    <div class="deco-split__content">
+      <div class="deco-split__eyebrow">{{ $featured.Params.eyebrow | default "Featured Project" }}</div>
+      <h2 class="deco-split__title">{{ $featured.Title }}</h2>
+      <div class="deco-split__text">
+        {{ $featured.Summary | markdownify }}
+      </div>
+      
+      <div class="grid grid-cols-3 gap-4 mb-8">
+        {{ with $featured.Params.downloads }}
+        <div class="text-center">
+          <div class="text-2xl font-bold text-brass-400">{{ . }}</div>
+          <div class="text-sm text-cream-300">Downloads</div>
+        </div>
+        {{ end }}
+        
+        {{ with $featured.Params.stars }}
+        <div class="text-center">
+          <div class="text-2xl font-bold text-brass-400">{{ . }}</div>
+          <div class="text-sm text-cream-300">GitHub Stars</div>
+        </div>
+        {{ end }}
+        
+        {{ with $featured.Params.packages }}
+        <div class="text-center">
+          <div class="text-2xl font-bold text-brass-400">{{ . }}</div>
+          <div class="text-sm text-cream-300">Packages</div>
+        </div>
+        {{ end }}
+      </div>
+      
+      <a href="{{ if $projectPage }}{{ $projectPage.RelPermalink }}{{ else }}{{ $featured.Params.project_url }}{{ end }}" class="deco-hero__cta">
+        {{ $featured.Params.cta | default (printf "Explore %s →" $featured.Title) }}
+      </a>
+    </div>
+  </div>
+  
+  <div class="deco-split__panel deco-split__panel--light">
+    <div class="deco-split__image">
+      <div class="deco-arch deco-arch--large">
+        {{ if $featured.Resources.GetMatch "featured*" }}
+          {{ $image := $featured.Resources.GetMatch "featured*" }}
+          <img src="{{ $image.RelPermalink }}" alt="{{ $featured.Title }}" loading="lazy">
+        {{ else if and $projectPage ($projectPage.Resources.GetMatch "featured*") }}
+          {{ $image := $projectPage.Resources.GetMatch "featured*" }}
+          <img src="{{ $image.RelPermalink }}" alt="{{ $featured.Title }}" loading="lazy">
+        {{ else if $featured.Params.image }}
+          <img src="{{ $featured.Params.image | relURL }}" alt="{{ $featured.Title }}" loading="lazy">
+        {{ else }}
+          <!-- Fallback visualization -->
+          <div class="bg-gradient-to-br from-amethyst-500 to-teal-600 w-full h-full flex items-center justify-center">
+            <div class="text-center">
+              <div class="text-6xl mb-4">{{ $featured.Params.icon | default "🧠" }}</div>
+              <div class="text-lg font-semibold text-white">{{ $featured.Title }}</div>
+              <div class="text-sm text-white/80">{{ $featured.Params.tagline | default "Featured Project" }}</div>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}

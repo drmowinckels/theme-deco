@@ -1,0 +1,121 @@
+// Modern Art Deco Color Palette - Inspired by luxury and mystique
+$emerald-green: #284139; 
+$forest-teal: #2c5f54; 
+$slate-blue: #304e4d; 
+
+$purple-amethyst: #6b4c7b; 
+$pink-sapphire: #bd84a1ff; 
+$red-garnet: #a73030ff; 
+
+$warm-brass: #c4ab46ff; 
+$rose-gold: #DEA193; 
+$bronze-earth: #ca6341ff; 
+
+$cream-silk: #f8f7f1; 
+$charcoal-noir: #1a1a1a; 
+
+
+
+// Generate sophisticated color scales
+@function generate-art-deco-scale($base-color, $name) {
+  $scale: ();
+  
+  // Lighter shades (50-400) - more sophisticated approach
+  $scale: map-merge($scale, (
+    50: mix(white, $base-color, 95%),
+    100: mix(white, $base-color, 85%),
+    200: mix(white, $base-color, 70%),
+    300: mix(white, $base-color, 50%),
+    400: mix(white, $base-color, 25%)
+  ));
+  
+  // Base color (500)
+  $scale: map-merge($scale, (500: $base-color));
+  
+  // Darker shades (600-950) - richer, more luxurious
+  $scale: map-merge($scale, (
+    600: mix(black, $base-color, 15%),
+    700: mix(black, $base-color, 30%),
+    800: mix(black, $base-color, 45%),
+    900: mix(black, $base-color, 60%),
+    950: mix(black, $base-color, 80%)
+  ));
+  
+  @return $scale;
+}
+
+// Generate our Art Deco color families
+$emerald: generate-art-deco-scale($emerald-green, 'emerald');
+$brass: generate-art-deco-scale($warm-brass, 'brass');
+$noir: generate-art-deco-scale($charcoal-noir, 'noir');
+$cream: generate-art-deco-scale($cream-silk, 'cream');
+$slate: generate-art-deco-scale($slate-blue, 'slate');
+$bronze: generate-art-deco-scale($bronze-earth, 'bronze');
+
+// Mixin to export color scales
+@mixin export-color-scale($scale, $prefix) {
+  @each $shade, $color in $scale {
+    --color-#{$prefix}-#{$shade}: #{$color};
+  }
+}
+
+// Enhanced color functions for Art Deco aesthetics
+@function art-deco-color($scale, $shade: 500) {
+  @return map-get($scale, $shade);
+}
+
+// Luxurious gradient mixins
+@function create-brass-gradient($angle: 135deg) {
+  @return linear-gradient(#{$angle}, 
+    #{art-deco-color($brass, 400)}, 
+    #{art-deco-color($brass, 600)}, 
+    #{art-deco-color($bronze, 500)}
+  );
+}
+
+@function create-emerald-gradient($angle: 135deg) {
+  @return linear-gradient(#{$angle}, 
+    #{art-deco-color($emerald, 600)}, 
+    #{art-deco-color($slate, 700)}
+  );
+}
+
+// Art Deco themed semantic colors
+@function theme-color($name, $variant: 'light') {
+  $color: null;
+  
+  @if $variant == 'light' {
+    @if $name == 'background' { $color: art-deco-color($cream, 100); }
+    @else if $name == 'surface' { $color: art-deco-color($cream, 50); }
+    @else if $name == 'surface-elevated' { $color: white; }
+    @else if $name == 'text-primary' { $color: art-deco-color($noir, 800); }
+    @else if $name == 'text-secondary' { $color: art-deco-color($noir, 600); }
+    @else if $name == 'text-muted' { $color: art-deco-color($slate, 500); }
+    @else if $name == 'accent-primary' { $color: art-deco-color($brass, 600); }
+    @else if $name == 'accent-secondary' { $color: art-deco-color($emerald, 600); }
+  } @else if $variant == 'dark' {
+    @if $name == 'background' { $color: art-deco-color($noir, 950); }
+    @else if $name == 'surface' { $color: art-deco-color($noir, 900); }
+    @else if $name == 'surface-elevated' { $color: art-deco-color($emerald, 950); }
+    @else if $name == 'text-primary' { $color: art-deco-color($cream, 100); }
+    @else if $name == 'text-secondary' { $color: art-deco-color($cream, 300); }
+    @else if $name == 'text-muted' { $color: art-deco-color($cream, 500); }
+    @else if $name == 'accent-primary' { $color: art-deco-color($brass, 400); }
+    @else if $name == 'accent-secondary' { $color: art-deco-color($emerald, 400); }
+  }
+  
+  @return $color;
+}
+
+// Art Deco specific mixing functions
+@function create-arch-shadow($color: $emerald-green) {
+  @return 0 8px 32px rgba($color, 0.3), 
+          0 2px 8px rgba($color, 0.2);
+}
+
+@function create-luxury-border($primary: $brass, $secondary: $emerald-green) {
+  @return linear-gradient(135deg, 
+    rgba(map-get($primary, 500), 0.8), 
+    rgba(map-get($secondary, 600), 0.6)
+  );
+}

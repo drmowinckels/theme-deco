@@ -1,0 +1,31 @@
+<nav class="deco-nav">
+  <div class="deco-nav__container">
+    <a href="/" class="deco-nav__logo">
+      {{ if .Site.Params.aesthetics.logo }}
+        <img src="{{ .Site.Params.aesthetics.logo | relURL }}" 
+             alt="{{ .Site.Title }}" 
+             height="{{ .Site.Params.aesthetics.height | default "40px" }}">
+      {{ else }}
+        {{ .Site.Title }}
+      {{ end }}
+    </a>
+    
+    {{ if .Site.Menus.main }}
+    <ul class="deco-nav__menu">
+      <li><a href="/" class="deco-nav__link {{ if .IsHome }}deco-nav__link--active{{ end }}">Home</a></li>
+      {{ range .Site.Menus.main }}
+      <li>
+        <a href="{{ .URL }}" 
+           class="deco-nav__link {{ if $.IsMenuCurrent "main" . }}deco-nav__link--active{{ end }}">
+          {{ .Name }}
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+    
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span class="sr-only">Toggle dark/light theme</span>
+    </button>
+  </div>
+</nav>

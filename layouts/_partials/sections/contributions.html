@@ -1,0 +1,51 @@
+<!-- Core Contributions Grid -->
+<section class="deco-section">
+  <div class="deco-container">
+    <div class="text-center mb-16">
+      <h2 class="font-deco text-5xl text-text-primary mb-4">{{ .Site.Params.contributions.title | default "Core Contributions" }}</h2>
+      <p class="text-text-secondary text-lg">{{ .Site.Params.contributions.subtitle | default "Open source tools and educational resources" }}</p>
+      <div class="deco-divider"></div>
+    </div>
+    
+    <div class="deco-service-grid">
+      {{ range .Site.Menus.main }}
+        {{ $section := $.Site.GetPage .URL }}
+        {{ if $section }}
+        <div class="deco-service-grid__card">
+          <div class="deco-service-grid__icon" style="background: var({{ .Params.color | default "--color-amethyst-600" }});">
+            {{ .Params.icon | default "📦" }}
+          </div>
+          <h3 class="deco-service-grid__title">{{ .Name }}</h3>
+          <p class="deco-service-grid__description">
+            {{ $section.Summary | default $section.Description }}
+          </p>
+          
+          {{ if eq $section.Section "r-paks" }}
+            {{ $packageCount := len (where $.Site.RegularPages "Section" "r-paks") }}
+            <div class="text-sm text-text-muted mb-4">
+              {{ $packageCount }} packages available
+            </div>
+          {{ else if eq $section.Section "talks" }}
+            {{ $talkCount := len (where $.Site.RegularPages "Section" "talks") }}
+            <div class="text-sm text-text-muted mb-4">
+              {{ $talkCount }} talks & workshops
+            </div>
+          {{ else if eq $section.Section "blog" }}
+            {{ $blogCount := len (where $.Site.RegularPages "Section" "blog") }}
+            <div class="text-sm text-text-muted mb-4">
+              {{ $blogCount }} solutions available
+            </div>
+          {{ else if eq $section.Section "projects" }}
+            {{ $projectCount := len (where $.Site.RegularPages "Section" "projects") }}
+            <div class="text-sm text-text-muted mb-4">
+              {{ $projectCount }} active projects
+            </div>
+          {{ end }}
+          
+          <a href="{{ .URL }}" class="deco-service-grid__link">{{ .Post | default (printf "Browse %s" .Name) }}</a>
+        </div>
+        {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</section>

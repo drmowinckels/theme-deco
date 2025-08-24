@@ -1,0 +1,73 @@
+<!-- Recent Content Section -->
+{{ $section := .section }}
+{{ $sectionPage := .Site.GetPage (printf "/%s" $section) }}
+{{ $recentPosts := first (.limit | default 6) (where .Site.RegularPages "Section" $section) }}
+
+{{ if $recentPosts }}
+<section class="deco-section{{ if .dark_bg }} bg-slate-950{{ end }}">
+  <div class="deco-container">
+    <div class="text-center mb-16">
+      <h2 class="font-deco text-4xl {{ if .dark_bg }}text-cream-100{{ else }}text-text-primary{{ end }} mb-4">
+        {{ .title | default (printf "Recent %s" ($sectionPage.Title | default (title $section))) }}
+      </h2>
+      <p class="{{ if .dark_bg }}text-cream-300{{ else }}text-text-secondary{{ end }}">
+        {{ .subtitle | default $sectionPage.Summary }}
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {{ range $recentPosts }}
+      <article class="deco-gallery-card">
+        {{ if and .Resources (ne $section "blog") }}
+          {{ $image := .Resources.GetMatch "featured*" }}
+          {{ if $image }}
+          <div class="deco-gallery-card__image">
+            <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" loading="lazy">
+          </div>
+          {{ end }}
+        {{ end }}
+        
+        <div class="deco-gallery-card__content"{{ if eq $section "blog" }} style="padding-top: 1.5rem;"{{ end }}>
+          {{ if .Date }}
+          <div class="text-xs text-accent-primary mb-2 uppercase tracking-wide">
+            {{ .Date.Format ($.Site.Params.dateFormat | default "Jan 2006") }}
+          </div>
+          {{ end }}
+          
+          <h3 class="deco-gallery-card__title{{ if eq $section "blog" }} text-lg{{ end }}">{{ .Title }}</h3>
+          
+          <p class="deco-gallery-card__description{{ if eq $section "blog" }} text-sm{{ end }}">
+            {{ .Summary | truncate 120 }}
+          </p>
+          
+          {{ if and .Params.tags (eq $section "blog") }}
+          <div class="flex flex-wrap gap-1 mb-3">
+            {{ range first 3 .Params.tags }}
+            <span class="deco-badge deco-badge--outline text-xs">{{ . }}</span>
+            {{ end }}
+          </div>
+          {{ end }}
+          
+          {{ if and .Params.github (ne $section "blog") }}
+          <div class="flex justify-between text-sm text-text-muted mb-4">
+            <span>{{ .Params.downloads | default "CRAN" }}</span>
+            <span>⭐ {{ .Params.stars | default "GitHub" }}</span>
+          </div>
+          {{ end }}
+          
+          <a href="{{ .RelPermalink }}" class="deco-gallery-card__link">
+            {{ if eq $section "blog" }}Read More{{ else if eq $section "r-paks" }}View Package{{ else }}Learn More{{ end }}
+          </a>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href="/{{ $section }}" class="deco-hero__cta">
+        View All {{ $sectionPage.Title | default (title $section) }} →
+      </a>
+    </div>
+  </div>
+</section>
+{{ end }}

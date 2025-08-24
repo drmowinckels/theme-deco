@@ -1,0 +1,22 @@
+{
+  "name": "hugo-art-deco-site",
+  "version": "1.0.0",
+  "description": "Art Deco themed Hugo site with Tailwind CSS 4.1",
+  "scripts": {
+    "dev": "hugo server -D --disableFastRender",
+    "build": "hugo --minify",
+    "preview": "hugo server --environment production"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0-alpha.30",
+    "tailwindcss": "^4.1.12",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "cssnano": "^7.0.6"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

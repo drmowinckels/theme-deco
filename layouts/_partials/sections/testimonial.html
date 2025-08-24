@@ -1,0 +1,17 @@
+<!-- Testimonial Section -->
+{{ $testimonials := where (where .Site.RegularPages "Section" "testimonials") ".Params.featured" true }}
+{{ $testimonial := index $testimonials 0 }}
+
+{{ if $testimonial }}
+<section class="deco-testimonial">
+  <div class="deco-container">
+    <div class="deco-testimonial__quote">
+      {{ $testimonial.Content | plainify }}
+    </div>
+    <div class="deco-testimonial__author">
+      {{ $testimonial.Params.author | default .Site.Params.author }}
+      {{ with $testimonial.Params.role }} • {{ . }}{{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

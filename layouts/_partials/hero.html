@@ -1,0 +1,42 @@
+<!-- Hero Section -->
+<section class="deco-hero">
+  <div class="deco-hero__content">
+    <h1 class="deco-hero__title">{{ .Site.Params.heroTitle | default .Site.Title }}</h1>
+    
+    {{ with .Site.Params.heroSubtitle }}
+      {{ if reflect.IsSlice . }}
+        <div class="deco-hero__subtitle-array">
+          {{ range $index, $item := . }}
+            <span class="deco-hero__subtitle-item">{{ $item }}</span>
+            {{- if ne $index (sub (len $) 1) -}}<span class="deco-hero__separator">•</span>{{- end -}}
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="deco-hero__subtitle">{{ . | safeHTML }}</p>
+      {{ end }}
+    {{ else }}
+      {{ with .Site.Params.subtitle }}
+        <p class="deco-hero__subtitle">{{ . | safeHTML }}</p>
+      {{ end }}
+    {{ end }}
+    
+    {{ if .Site.Menus.main }}
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+      {{ $firstMenu := index .Site.Menus.main 0 }}
+      {{ $secondMenu := index .Site.Menus.main 1 }}
+      
+      {{ with $firstMenu }}
+      <a href="{{ .URL }}" class="deco-hero__cta">
+        {{ .Pre }}{{ .Name }}{{ .Post }}
+      </a>
+      {{ end }}
+      
+      {{ with $secondMenu }}
+      <a href="{{ .URL }}" class="deco-hero__cta deco-hero__cta--outline">
+        {{ .Pre }}{{ .Name }}{{ .Post }}
+      </a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</section>

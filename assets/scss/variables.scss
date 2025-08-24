@@ -1,0 +1,68 @@
+@import "colours";
+
+/* Modern Art Deco CSS Custom Properties */
+
+:root {
+  /* Export all color families */
+  @include export-color-scale($emerald-green, 'emerald');
+  @include export-color-scale($forest-teal, 'teal');
+  @include export-color-scale($warm-brass, 'brass');
+  @include export-color-scale($rose-gold, 'rose');
+  @include export-color-scale($cream-silk, 'cream');
+  @include export-color-scale($charcoal-noir, 'noir');
+  @include export-color-scale($slate-blue, 'slate');
+  @include export-color-scale($bronze-earth, 'bronze');
+  @include export-color-scale($purple-amethyst, 'amethyst');
+  @include export-color-scale($pink-sapphire, 'sapphire');
+  @include export-color-scale($red-garnet, 'garnet');
+
+  /* Light theme semantic colors */
+  --color-background: #{theme-color('background', 'light')};
+  --color-surface: #{theme-color('surface', 'light')};
+  --color-surface-elevated: #{theme-color('surface-elevated', 'light')};
+  --color-text-primary: #{theme-color('text-primary', 'light')};
+  --color-text-secondary: #{theme-color('text-secondary', 'light')};
+  --color-text-muted: #{theme-color('text-muted', 'light')};
+  --color-accent-primary: #{theme-color('accent-primary', 'light')};
+  --color-accent-secondary: #{theme-color('accent-secondary', 'light')};
+  
+  /* Art Deco specific variables */
+  --color-border: #{rgba(art-deco-color($brass, 400), 0.2)};
+  --color-border-focus: #{art-deco-color($brass, 500)};
+  
+  /* Luxurious gradients */
+  --gradient-brass: #{create-brass-gradient()};
+  --gradient-emerald: #{create-emerald-gradient()};
+  --gradient-arch: radial-gradient(ellipse at center, 
+    #{rgba(art-deco-color($brass, 400), 0.1)} 0%, 
+    #{rgba(art-deco-color($emerald, 600), 0.05)} 70%, 
+    transparent 100%);
+  
+  /* Art Deco shadows */
+  --shadow-arch: #{create-arch-shadow()};
+  --shadow-luxury: 0 4px 20px #{rgba(art-deco-color($noir, 800), 0.15)};
+  --shadow-brass-glow: 0 0 20px #{rgba(art-deco-color($brass, 500), 0.3)};
+  
+  /* Geometric patterns */
+  --pattern-sunburst: #{create-brass-gradient(90deg)};
+  --pattern-arch-border: #{create-luxury-border($brass, $emerald)};
+}
+
+/* Dark theme overrides */
+.dark {
+  --color-background: #{theme-color('background', 'dark')};
+  --color-surface: #{theme-color('surface', 'dark')};
+  --color-surface-elevated: #{theme-color('surface-elevated', 'dark')};
+  --color-text-primary: #{theme-color('text-primary', 'dark')};
+  --color-text-secondary: #{theme-color('text-secondary', 'dark')};
+  --color-text-muted: #{theme-color('text-muted', 'dark')};
+  --color-accent-primary: #{theme-color('accent-primary', 'dark')};
+  --color-accent-secondary: #{theme-color('accent-secondary', 'dark')};
+  
+  --color-border: #{rgba(art-deco-color($brass, 400), 0.3)};
+  --color-border-focus: #{art-deco-color($brass, 400)};
+  
+  /* Enhanced shadows for dark theme */
+  --shadow-arch: #{create-arch-shadow(art-deco-color($brass, 600))};
+  --shadow-luxury: 0 8px 32px #{rgba(art-deco-color($noir, 950), 0.6)};
+}

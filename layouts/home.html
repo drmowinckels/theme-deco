@@ -1,0 +1,475 @@
+{{ define "main" }}
+
+<!-- Art Deco Navigation -->
+<nav class="deco-nav">
+  <div class="deco-nav__container">
+    <a href="/" class="deco-nav__logo">{{ .Site.Title }}</a>
+    <ul class="deco-nav__menu">
+      <li><a href="/" class="deco-nav__link deco-nav__link--active">Home</a></li>
+      {{ range .Site.Menus.main }}
+      <li><a href="{{ .URL }}" class="deco-nav__link">{{ .Name }}</a></li>
+      {{ end }}
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span class="sr-only">Toggle dark/light theme</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Developer Hero Section -->
+<section class="deco-hero">
+  <div class="deco-hero__content">
+    <h1 class="deco-hero__title">{{ .Site.Params.heroTitle | default "Building Tools for Research" }}</h1>
+    
+    {{ with .Site.Params.heroSubtitle }}
+      {{ if reflect.IsSlice . }}
+        <div class="deco-hero__subtitle-array">
+          {{ range $index, $item := . }}
+            <span class="deco-hero__subtitle-item">{{ $item }}</span>{{ if ne $index (sub (len $) 1) }}<span class="deco-hero__separator">•</span>{{ end }}
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="deco-hero__subtitle">{{ . }}</p>
+      {{ end }}
+    {{ else }}
+      <p class="deco-hero__subtitle">R Developer • Package Maintainer • Technical Educator</p>
+    {{ end }}
+    
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+      <a href="{{ (index .Site.Menus.main 0).URL }}" class="deco-hero__cta">
+        Explore {{ (index .Site.Menus.main 0).Name }}
+      </a>
+      <a href="{{ (index .Site.Menus.main 1).URL }}" class="deco-hero__cta" style="background: transparent; color: var(--color-accent-primary);">
+        View {{ (index .Site.Menus.main 1).Name }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Work Split Section -->
+{{ $featuredProject := .Site.GetPage "/r-paks/ggseg" }}
+{{ if $featuredProject }}
+<section class="deco-split">
+  <div class="deco-split__panel deco-split__panel--dark">
+    <div class="deco-split__content">
+      <div class="deco-split__eyebrow">Flagship Project</div>
+      <h2 class="deco-split__title">{{ $featuredProject.Title | default "ggseg Suite" }}</h2>
+      <p class="deco-split__text">
+        {{ $featuredProject.Summary | default "A comprehensive ecosystem of R packages for brain visualization and analysis." }}
+      </p>
+      <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="text-center">
+          <div class="text-2xl font-bold text-brass-400">{{ .Site.Params.featured.downloads | default "50K+" }}</div>
+          <div class="text-sm text-cream-300">Downloads</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-brass-400">{{ .Site.Params.featured.stars | default "150+" }}</div>
+          <div class="text-sm text-cream-300">GitHub Stars</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-brass-400">{{ .Site.Params.featured.packages | default "5" }}</div>
+          <div class="text-sm text-cream-300">Packages</div>
+        </div>
+      </div>
+      <a href="{{ $featuredProject.RelPermalink }}" class="deco-hero__cta">
+        Explore {{ $featuredProject.Title }} →
+      </a>
+    </div>
+  </div>
+  
+  <div class="deco-split__panel deco-split__panel--light">
+    <div class="deco-split__image">
+      <div class="deco-arch deco-arch--large">
+        {{ if $featuredProject.Resources.GetMatch "featured*" }}
+          {{ $image := $featuredProject.Resources.GetMatch "featured*" }}
+          <img src="{{ $image.RelPermalink }}" alt="{{ $featuredProject.Title }}" loading="lazy">
+        {{ else }}
+          <!-- Fallback brain visualization -->
+          <div class="bg-gradient-to-br from-amethyst-500 to-teal-600 w-full h-full flex items-center justify-center">
+            <div class="text-center">
+              <div class="text-6xl mb-4">🧠</div>
+              <div class="text-lg font-semibold text-white">{{ $featuredProject.Title }}</div>
+              <div class="text-sm text-white/80">Interactive Demo</div>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<!-- Core Contributions Grid -->
+<section class="deco-section">
+  <div class="deco-container">
+    <div class="text-center mb-16">
+      <h2 class="font-deco text-5xl text-text-primary mb-4">Core Contributions</h2>
+      <p class="text-text-secondary text-lg">Open source tools and educational resources for the R community</p>
+      <div class="deco-divider"></div>
+    </div>
+    
+    <div class="deco-service-grid">
+      {{ $rPaksSection := .Site.GetPage "/r-paks" }}
+      {{ $talksSection := .Site.GetPage "/talks" }}
+      {{ $blogSection := .Site.GetPage "/blog" }}
+      {{ $projectsSection := .Site.GetPage "/projects" }}
+      
+      <div class="deco-service-grid__card">
+        <div class="deco-service-grid__icon" style="background: var(--color-amethyst-600);">
+          📦
+        </div>
+        <h3 class="deco-service-grid__title">R Packages</h3>
+        <p class="deco-service-grid__description">
+          {{ $rPaksSection.Summary | default "Specialized tools for neuroscience research, data visualization, and statistical analysis." }}
+        </p>
+        <div class="text-sm text-text-muted mb-4">
+          {{ $packageCount := len (where .Site.RegularPages "Section" "r-paks") }}
+          {{ $packageCount }} packages available
+        </div>
+        <a href="{{ $rPaksSection.RelPermalink }}" class="deco-service-grid__link">Browse Packages</a>
+      </div>
+      
+      <div class="deco-service-grid__card">
+        <div class="deco-service-grid__icon" style="background: var(--color-teal-600);">
+          🎓
+        </div>
+        <h3 class="deco-service-grid__title">Teaching & Workshops</h3>
+        <p class="deco-service-grid__description">
+          {{ $talksSection.Summary | default "Instructor for R programming, data visualization, and reproducible research." }}
+        </p>
+        <div class="text-sm text-text-muted mb-4">
+          {{ $talkCount := len (where .Site.RegularPages "Section" "talks") }}
+          {{ $talkCount }} talks & workshops
+        </div>
+        <a href="{{ $talksSection.RelPermalink }}" class="deco-service-grid__link">View Teaching</a>
+      </div>
+      
+      <div class="deco-service-grid__card">
+        <div class="deco-service-grid__icon" style="background: var(--color-garnet-600);">
+          🔧
+        </div>
+        <h3 class="deco-service-grid__title">Technical Solutions</h3>
+        <p class="deco-service-grid__description">
+          {{ $blogSection.Summary | default "Practical code solutions, tutorials, and best practices." }}
+        </p>
+        <div class="text-sm text-text-muted mb-4">
+          {{ $blogCount := len (where .Site.RegularPages "Section" "blog") }}
+          {{ $blogCount }} posts available
+        </div>
+        <a href="{{ $blogSection.RelPermalink }}" class="deco-service-grid__link">Browse Solutions</a>
+      </div>
+      
+      <div class="deco-service-grid__card">
+        <div class="deco-service-grid__icon" style="background: var(--color-bronze-600);">
+          🚀
+        </div>
+        <h3 class="deco-service-grid__title">Open Source Projects</h3>
+        <p class="deco-service-grid__description">
+          {{ $projectsSection.Summary | default "Contributing to the broader ecosystem with educational resources and tools." }}
+        </p>
+        <div class="text-sm text-text-muted mb-4">
+          {{ $projectCount := len (where .Site.RegularPages "Section" "projects") }}
+          {{ $projectCount }} active projects
+        </div>
+        <a href="{{ $projectsSection.RelPermalink }}" class="deco-service-grid__link">View Projects</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Package Showcase -->
+{{ $packages := where .Site.RegularPages "Section" "r-paks" }}
+{{ if $packages }}
+<section class="deco-section bg-slate-950">
+  <div class="deco-container">
+    <div class="text-center mb-16">
+      <h2 class="font-deco text-5xl text-cream-100 mb-6">Featured Packages</h2>
+      <p class="text-cream-300 text-lg max-w-2xl mx-auto">
+        Production-ready R packages used by neuroscience researchers worldwide
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {{ range first 3 $packages }}
+      <div class="deco-gallery-card">
+        <div class="deco-gallery-card__image">
+          {{ if .Resources.GetMatch "featured*" }}
+            {{ $image := .Resources.GetMatch "featured*" }}
+            <img src="{{ $image.RelPermalink }}" alt="{{ .Title }}" loading="lazy">
+          {{ else }}
+            <!-- Fallback with package-specific styling -->
+            {{ $colors := slice "from-amethyst-600 to-sapphire-500" "from-teal-600 to-emerald-500" "from-bronze-600 to-brass-500" }}
+            {{ $color := index $colors (mod .Weight 3) }}
+            <div class="bg-gradient-to-br {{ $color }} w-full h-full flex items-center justify-center">
+              <div class="text-center">
+                <div class="text-4xl mb-2">📦</div>
+                <div class="text-white font-semibold">{{ .Title }}</div>
+              </div>
+            </div>
+          {{ end }}
+        </div>
+        <div class="deco-gallery-card__content">
+          <h3 class="deco-gallery-card__title">{{ .Title }}</h3>
+          <p class="deco-gallery-card__description">
+            {{ .Summary | truncate 100 }}
+          </p>
+          {{ if .Params.github }}
+          <div class="flex justify-between text-sm text-text-muted mb-4">
+            <span>{{ .Params.downloads | default "CRAN" }}</span>
+            <span>⭐ {{ .Params.stars | default "GitHub" }}</span>
+          </div>
+          {{ end }}
+          <a href="{{ .RelPermalink }}" class="deco-gallery-card__link">View Package</a>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<!-- Recent Solutions (Blog) -->
+{{ $recentPosts := first 6 (where .Site.RegularPages "Section" "blog") }}
+{{ if $recentPosts }}
+<section class="deco-section">
+  <div class="deco-container">
+    <div class="text-center mb-16">
+      <h2 class="font-deco text-4xl text-text-primary mb-4">Recent Solutions</h2>
+      <p class="text-text-secondary">Latest technical posts and code examples</p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {{ range $recentPosts }}
+      <article class="deco-gallery-card">
+        <div class="deco-gallery-card__content" style="padding-top: 1.5rem;">
+          <div class="text-xs text-accent-primary mb-2 uppercase tracking-wide">
+            {{ .Date.Format "Jan 2006" }}
+          </div>
+          <h3 class="deco-gallery-card__title text-lg">{{ .Title }}</h3>
+          <p class="deco-gallery-card__description text-sm">
+            {{ .Summary | truncate 120 }}
+          </p>
+          {{ if .Params.tags }}
+          <div class="flex flex-wrap gap-1 mb-3">
+            {{ range first 3 .Params.tags }}
+            <span class="deco-badge deco-badge--outline text-xs">{{ . }}</span>
+            {{ end }}
+          </div>
+          {{ end }}
+          <a href="{{ .RelPermalink }}" class="deco-gallery-card__link">Read More</a>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href="/blog" class="deco-hero__cta">
+        View All Solutions →
+      </a>
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<!-- Teaching Impact -->
+{{ $aboutPage := .Site.GetPage "/about" }}
+<section class="deco-testimonial">
+  <div class="deco-container">
+    <div class="deco-testimonial__quote">
+      {{ .Site.Params.testimonialQuote | default "Empowering researchers with the tools and knowledge to make their data analysis more efficient, reproducible, and impactful." }}
+    </div>
+    <div class="deco-testimonial__author">
+      {{ .Site.Params.testimonialAuthor | default "Teaching R programming and data visualization to the neuroscience community" }}
+    </div>
+  </div>
+</section>
+
+<!-- Contact/Collaboration CTA -->
+<section class="deco-section">
+  <div class="deco-container">
+    <div class="text-center">
+      <h2 class="font-deco text-4xl text-text-primary mb-6">Let's Collaborate</h2>
+      <p class="text-text-secondary text-lg mb-8 max-w-2xl mx-auto">
+        Interested in contributing to open source neuroscience tools or need training for your team?
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        {{ if .Site.Params.github }}
+        <a href="https://github.com/{{ .Site.Params.github }}" class="deco-hero__cta" target="_blank" rel="noopener">
+          GitHub →
+        </a>
+        {{ end }}
+        <a href="/about" class="deco-hero__cta" style="background: transparent; color: var(--color-accent-primary);">
+          About & Contact
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="deco-footer">
+  <div class="deco-footer__content">
+    <div class="deco-footer__logo">{{ .Site.BaseURL | replaceRE "https?://" "" }}</div>
+    <p class="deco-footer__text">
+      {{ .Site.Params.description | default "Building open source tools for research and teaching programming to make data analysis more accessible and reproducible." }}
+    </p>
+    
+    <div class="deco-footer__links">
+      {{ range .Site.Menus.footer }}
+      <a href="{{ .URL }}">{{ .Name }}</a>
+      {{ end }}
+    </div>
+    
+    <div class="deco-footer__divider"></div>
+    
+    <div class="deco-footer__copyright">
+      © {{ now.Format "2006" }} {{ .Site.Params.author | default .Site.Title }} • Open source contributions for research
+    </div>
+  </div>
+</footer>
+
+{{ partial "theme-toggle.js" . }}
+
+{{ end }}-brass-500 w-full h-full flex items-center justify-center">
+            <div class="text-center">
+              <div class="text-4xl mb-2">📋</div>
+              <div class="text-white font-semibold">nettskjemar</div>
+            </div>
+          </div>
+        </div>
+        <div class="deco-gallery-card__content">
+          <h3 class="deco-gallery-card__title">nettskjemar</h3>
+          <p class="deco-gallery-card__description">
+            API client for University of Oslo's survey platform. Streamline data collection workflows.
+          </p>
+          <div class="flex justify-between text-sm text-text-muted mb-4">
+            <span>⬇️ 2K+ downloads</span>
+            <span>⭐ 12 stars</span>
+          </div>
+          <a href="/r-paks/nettskjemar" class="deco-gallery-card__link">View Package</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Solutions (Blog) -->
+<section class="deco-section">
+  <div class="deco-container">
+    <div class="text-center mb-16">
+      <h2 class="font-deco text-4xl text-text-primary mb-4">Recent Solutions</h2>
+      <p class="text-text-secondary">Latest technical posts and code examples</p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {{ range first 6 (where .Site.RegularPages "Section" "blog") }}
+      <article class="deco-gallery-card">
+        <div class="deco-gallery-card__content" style="padding-top: 1.5rem;">
+          <div class="text-xs text-accent-primary mb-2 uppercase tracking-wide">
+            {{ .Date.Format "Jan 2006" }}
+          </div>
+          <h3 class="deco-gallery-card__title text-lg">{{ .Title }}</h3>
+          <p class="deco-gallery-card__description text-sm">
+            {{ .Summary | truncate 120 }}
+          </p>
+          <a href="{{ .RelPermalink }}" class="deco-gallery-card__link">Read More</a>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href="/blog" class="deco-hero__cta">
+        View All Solutions →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Teaching Impact -->
+<section class="deco-testimonial">
+  <div class="deco-container">
+    <div class="deco-testimonial__quote">
+      Empowering researchers with the tools and knowledge to make their data analysis more efficient, reproducible, and impactful.
+    </div>
+    <div class="deco-testimonial__author">
+      Teaching R programming and data visualization to the neuroscience community
+    </div>
+  </div>
+</section>
+
+<!-- Contact/Collaboration CTA -->
+<section class="deco-section">
+  <div class="deco-container">
+    <div class="text-center">
+      <h2 class="font-deco text-4xl text-text-primary mb-6">Let's Collaborate</h2>
+      <p class="text-text-secondary text-lg mb-8 max-w-2xl mx-auto">
+        Interested in contributing to open source neuroscience tools or need training for your team?
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://github.com/drmowinckels" class="deco-hero__cta" target="_blank" rel="noopener">
+          GitHub →
+        </a>
+        <a href="/about" class="deco-hero__cta" style="background: transparent; color: var(--color-accent-primary);">
+          About & Contact
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="deco-footer">
+  <div class="deco-footer__content">
+    <div class="deco-footer__logo">drmowinckels.github.io</div>
+    <p class="deco-footer__text">
+      Building open source tools for neuroscience research and teaching R programming 
+      to make data analysis more accessible and reproducible.
+    </p>
+    
+    <div class="deco-footer__links">
+      <a href="/r-paks">R Packages</a>
+      <a href="/talks">Teaching</a>
+      <a href="/blog">Technical Solutions</a>
+      <a href="/projects">Projects</a>
+      <a href="/about">About</a>
+      <a href="/newsletter">Newsletter</a>
+    </div>
+    
+    <div class="deco-footer__divider"></div>
+    
+    <div class="deco-footer__copyright">
+      © {{ now.Format "2006" }} Athanasia Mo Mowinckel • Open source contributions for neuroscience research
+    </div>
+  </div>
+</footer>
+
+<!-- Theme Toggle Script -->
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.classList.contains('dark');
+    
+    if (isDark) {
+      html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // Apply saved theme on load
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    }
+  });
+</script>
+
+{{ end }}

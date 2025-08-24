@@ -1,0 +1,162 @@
+# Hugo Art Deco Developer Site Configuration
+baseURL  = "./"
+theme    = "hugo-deco"  # Updated to new Art Deco theme
+title    = "Dr. Mowinckel's"
+
+buildDrafts     = true    
+buildFuture     = true   
+
+canonifyurls    = true    
+enableRobotsTXT = true
+enableGitInfo   = true
+enforce_ssl     = true
+
+DefaultContentLanguage  = "en-UK" 
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "index\\.html", "about\\.html",
+    "static/blog/\\*_files/", "README", "\\.knit\\.md$", "\\.utf8\\.md$",
+    "\\.qmd$", "\\.ipynb$", "\\.py$", "about/resume*"]
+
+[build]
+  writeStats = true
+
+# Getting raw html to render
+[markup]
+    [markup.goldmark]
+        [markup.goldmark.renderer]
+        unsafe = true
+        [markup.goldmark.parser]
+        wrapStandAloneImageWithinParagraph = false
+
+# Taxonomy configuration
+[taxonomies]
+  tag = 'tags'
+  category = 'categories'
+  topic = 'topics'
+
+[params]
+    # Legacy theme compatibility
+    themeStyle    = "light"                 # Choose "light" or "dark"
+    dateFormat    = "Jan 2, 2006"
+    subtitle       = "&#8212; all things R and neuroimaging &#8212;"
+    clicky = "101481527"
+    
+    # Art Deco theme parameters
+    description = 'R Developer, Neuroscience Tools, Technical Educator'
+    author = 'Athanasia Mo Mowinckel'
+    github = 'DrMowinckels'
+    
+    # Site taglines for Art Deco theme
+    heroTitle = 'Building Tools for Brain Research'
+    heroSubtitle = ['R Developer', 'Package Maintainer', 'Technical Educator']
+    
+    # CTA section
+    [params.cta]
+        title = "Let's Collaborate"
+        subtitle = "Interested in contributing to open source neuroscience tools or need training for your team?"
+
+    [params.footerSection]
+        title   = "<i class=\"fa-regular fa-copyright\"></i> 2023 Athanasia Mo Mowinckel"
+        content = ""
+        height  = "500px"
+
+    [params.aesthetics]
+        # Path to icon files from the assets/ directory
+        favicon  = "/img/fav.ico.png"
+        logo     = "/img/logo.png"
+        height   = "100px"
+        customSass = ["custom.scss"]
+
+        # All possible themes can
+        # be found at: https://highlightjs.org/examples
+        highightStyle  = "night-owl"
+
+        # Art Deco color palette (keeping your existing colors as backups)
+        primary   = "#198c8c"   # Your existing teal
+        secondary = "#993299"   # Your existing purple
+        inverse   = "#843c83"   # Your existing inverse
+        muted     = "#b7dbdb"   # Your existing muted
+
+        thumbShape = "hexagon"
+
+    [params.analytics]
+    [params.analytics.plausible]
+        domain = "drmowinckels.io"
+
+    [params.blog]
+        citation = true
+
+    [params.giscus]
+        repo = "DrMowinckels/drmowinckels.github.io"
+        repo_id = "MDEwOlJlcG9zaXRvcnkxMjM0NzEwMTI="
+        category = "Comments"
+        category_id = "DIC_kwDOB1wEpM4CAG0c"
+        mapping = "pathname"
+        reactions_enabled = "1"
+        emit_metadata = "0"
+        theme = "light"
+        lang = "en"
+
+# Main navigation menu (Art Deco theme structure)
+[menu]
+  [[menu.main]]
+    identifier = 'packages'
+    name = 'Packages'
+    url = '/r-paks/'
+    weight = 10
+    
+  [[menu.main]]
+    identifier = 'teaching'
+    name = 'Teaching'
+    url = '/talks/'
+    weight = 20
+    
+  [[menu.main]]
+    identifier = 'solutions'
+    name = 'Solutions'
+    url = '/blog/'
+    weight = 30
+    
+  [[menu.main]]
+    identifier = 'about'
+    name = 'About'
+    url = '/about/'
+    weight = 40
+
+# Footer menu
+  [[menu.footer]]
+    name = 'R Packages'
+    url = '/r-paks/'
+    weight = 10
+    
+  [[menu.footer]]
+    name = 'Teaching'
+    url = '/talks/'
+    weight = 20
+    
+  [[menu.footer]]
+    name = 'Technical Solutions'
+    url = '/blog/'
+    weight = 30
+    
+  [[menu.footer]]
+    name = 'Projects'
+    url = '/projects/'
+    weight = 40
+    
+  [[menu.footer]]
+    name = 'About'
+    url = '/about/'
+    weight = 50
+    
+  [[menu.footer]]
+    name = 'Newsletter'
+    url = '/newsletter/'
+    weight = 60
+
+# Security settings for Art Deco theme
+[security]
+  [security.exec]
+    allow = ["^(dart-)?sass(-embedded)?$", "^go$", "^npx$", "^postcss$"]
+    osEnv = ["(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM|GO.*|HUGO_.*)$"]
+  [security.funcs]
+    getenv = ["^HUGO_", "^CI$"]
